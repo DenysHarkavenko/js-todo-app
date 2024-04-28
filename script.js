@@ -3,8 +3,8 @@ let todos = []
 
 // Function to add a new todo
 function newTodo() {
-	const task = prompt('Enter a new todo:')
-	if (task) {
+	const task = prompt('Enter a new todo:').trim()
+	if (task.length != 0) {
 		todos.push({ task: task, completed: false })
 		render()
 		updateCounters()
