@@ -1,11 +1,27 @@
 // Initial array of todos
 let todos = []
 
+// Function to load todos from local storage
+function loadTodos() {
+	const storedTodos = localStorage.getItem('todos')
+	if (storedTodos) {
+		todos = JSON.parse(storedTodos)
+		render()
+		updateCounters()
+	}
+}
+
+// Function to save todos to local storage
+function saveTodos() {
+	localStorage.setItem('todos', JSON.stringify(todos))
+}
+
 // Function to add a new todo
 function newTodo() {
 	const task = prompt('Enter a new todo:').trim()
-	if (task.length != 0) {
+	if (task.length !== 0) {
 		todos.push({ task: task, completed: false })
+		saveTodos()
 		render()
 		updateCounters()
 	}
@@ -45,6 +61,7 @@ function updateCounters() {
 // Function to delete a todo item
 function deleteTodo(task) {
 	todos = todos.filter((todo) => todo.task !== task)
+	saveTodos()
 	render()
 	updateCounters()
 }
@@ -54,7 +71,11 @@ function checkTodo(task) {
 	const index = todos.findIndex((todo) => todo.task === task)
 	if (index !== -1) {
 		todos[index].completed = !todos[index].completed
+		saveTodos()
 		render()
 		updateCounters()
 	}
 }
+
+// Call loadTodos() when the page loads
+window.onload = loadTodos
